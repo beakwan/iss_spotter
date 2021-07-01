@@ -1,5 +1,6 @@
 const request = require('request-promise-native');
 
+
 const fetchMyIP = function() {
   return request('https://api.ipify.org?format=json');
 };
@@ -9,4 +10,20 @@ const fetchCoordsByIP = function(body) {
   return request(`https://freegeoip.app/json/${ip}`);
 };
 
-module.exports = { fetchMyIP, fetchCoordsByIP };
+const fetchISSFlyOverTimes = function(location) {
+  const { latitude, longitude} = JSON.parse(location);
+  return request(`http://api.open-notify.org/iss-pass.json?lat=${latitude}&lon=${longitude}`);
+};
+
+const nextISSTimesForMyLocation = function() {
+  return fetchMyIP()
+    .then(fetchCoordsByIP)
+    .then(fetchISSFlyOverTimes)
+    .then((times) => {
+    const {response} = JSON.parse(times);
+    return response;
+    });
+};
+
+module.exports = {nextISSTimesForMyLocation};
+//module.exports = { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes };

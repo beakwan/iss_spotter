@@ -1,5 +1,14 @@
-const { fetchMyIP, fetchCoordsByIP } = require('./iss_promised');
+// const { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes } = require('./iss_promised');
 
-fetchMyIP()
-.then(fetchCoordsByIP)
-.then(coords => console.log(coords));
+// fetchMyIP()
+// .then(fetchCoordsByIP)
+// .then(fetchISSFlyOverTimes)
+// .then(times => console.log(times));
+
+const {nextISSTimesForMyLocation} = require('./iss_promised');
+const {printPassTimes} = require('./index');
+
+nextISSTimesForMyLocation()
+.then((times) => {
+  printPassTimes(times);
+});
